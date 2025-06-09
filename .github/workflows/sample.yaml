@@ -1,10 +1,10 @@
 name: unit-test-code-coverage
 on: 
-  #workflow_dispatch: 
+  workflow_dispatch: 
   push: 
     branches:
-      #- main
-      #- 'feature/*'
+      - main
+      - 'feature/*'
 env: 
   MONGODB_URI: 'mongodb+srv://shanmukhamchowdary:pqP522VYEzZWFHGq@cluster0.orrajh6.mongodb.net/'
   MONGODB_USERNAME: ${{ vars.MONGODB_USERNAME }}
@@ -37,6 +37,7 @@ jobs:
 
   code-coverage: 
     name: Code Coverage
+    needs: unit-testing
     runs-on: ubuntu-latest
     steps: 
     - name: Checkout Repo
