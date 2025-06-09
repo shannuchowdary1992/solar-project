@@ -4,7 +4,7 @@ on:
   push: 
     branches:
       - main
-      # - 'feature/*'
+      - 'feature/*'
 env: 
   MONGODB_URI: 'mongodb+srv://shanmukhamchowdary:pqP522VYEzZWFHGq@cluster0.orrajh6.mongodb.net/'
   MONGODB_USERNAME: ${{ vars.MONGODB_USERNAME }}
