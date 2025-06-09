@@ -6,14 +6,13 @@ const mongoose = require("mongoose");
 const app = express();
 const cors = require('cors')
 
-
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
 app.use(cors())
 
-mongoose.connect(process.env.MONGO_URI, {
-    user: process.env.MONGO_USERNAME,
-    pass: process.env.MONGO_PASSWORD,
+mongoose.connect('mongodb+srv://shanmukhamchowdary:pqP522VYEzZWFHGq@cluster0.orrajh6.mongodb.net/', {
+    user: 'shanmukhamchowdary',
+    pass: 'ynOf9mfznmdEvdXb',
     useNewUrlParser: true,
     useUnifiedTopology: true
 }, function(err) {
@@ -36,28 +35,48 @@ var dataSchema = new Schema({
 });
 var planetModel = mongoose.model('planets', dataSchema);
 
+// Seed planets data
+const planets = [
+  { id: 1, name: "Mercury" },
+  { id: 2, name: "Venus" },
+  { id: 3, name: "Earth" },
+  { id: 4, name: "Mars" },
+  { id: 5, name: "Jupiter" },
+  { id: 6, name: "Saturn" },
+  { id: 7, name: "Uranus" },
+  { id: 8, name: "Neptune" }
+];
 
+async function seedPlanets() {
+  try {
+    await planetModel.deleteMany({});  // Remove old data
+    await planetModel.insertMany(planets);
+    console.log("Planets seeded successfully!");
+  } catch (err) {
+    console.error("Error seeding planets:", err);
+  }
+}
 
-app.post('/planet',   function(req, res) {
-   // console.log("Received Planet ID " + req.body.id)
+// Call this once to seed data
+// seedPlanets();
+
+app.post('/planet', function(req, res) {
     planetModel.findOne({
         id: req.body.id
     }, function(err, planetData) {
         if (err) {
-            alert("Ooops, We only have 9 planets and a sun. Select a number from 0 - 9")
-            res.send("Error in Planet Data")
+            res.status(500).send("Error in Planet Data");
         } else {
             res.send(planetData);
         }
     })
 })
 
-app.get('/',   async (req, res) => {
+app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
 
-
-app.get('/os',   function(req, res) {
+app.get('/os', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.send({
         "os": OS.hostname(),
@@ -65,14 +84,14 @@ app.get('/os',   function(req, res) {
     });
 })
 
-app.get('/live',   function(req, res) {
+app.get('/live', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.send({
         "status": "live"
     });
 })
 
-app.get('/ready',   function(req, res) {
+app.get('/ready', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.send({
         "status": "ready"
@@ -82,6 +101,5 @@ app.get('/ready',   function(req, res) {
 app.listen(3000, () => {
     console.log("Server successfully running on port - " +3000);
 })
-
 
 module.exports = app;
