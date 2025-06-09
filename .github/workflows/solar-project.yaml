@@ -1,0 +1,29 @@
+name: solar system unit test-1
+on: 
+  workflow_dispatch: 
+  push: 
+    branches:
+      - main
+      - 'feature/*'
+env: 
+  MONGODB_URI: 'mongodb+srv://shanmukhamchowdary:pqP522VYEzZWFHGq@cluster0.orrajh6.mongodb.net/'
+  MONGODB_USERNAME: ${{ vars.MONGODB_USERNAME }}
+  MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+jobs: 
+  unit-testing:
+    name: Unit Testing
+    runs-on: ubuntu-latest
+    steps: 
+    - name: checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Nodejs version - 18
+      uses: actions/setup-node@v4
+      with: 
+        node-version: 18
+    
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Unit Testing
+      run: npm test
