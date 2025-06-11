@@ -5,6 +5,9 @@ on:
     branches:
       - main
       - 'feature/*'
+permissions: 
+  contents: read
+  packages: write
 env: 
   MONGODB_URI: 'mongodb+srv://shanmukhamchowdary:pqP522VYEzZWFHGq@cluster0.orrajh6.mongodb.net/'
   MONGODB_USERNAME: ${{ vars.MONGODB_USERNAME }}
