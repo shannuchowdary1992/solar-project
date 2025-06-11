@@ -22,7 +22,12 @@ jobs:
       uses: actions/setup-node@v4
       with: 
         node-version: 18
-    
+    - name: cache npm dependency
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-modules-${{ hashfiles('package-lock.json') }}
+        
     - name: Install Dependencies
       run: npm install
 
